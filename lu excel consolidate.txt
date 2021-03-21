@@ -1,0 +1,18 @@
+Sub lume()
+Dim fd As FileDialog
+Set fd = Application.FileDialog(msoFileDialogOpen)
+fd.AllowMultiSelect = True
+fd.Filters.Add "Plese select Excel file only", "*.xl*", 1
+fd.Show
+For i = 1 To fd.SelectedItems.Count
+Workbooks.Open fd.SelectedItems(i)
+frow = Cells(Rows.Count, 1).End(xlUp).Row
+fcol = Cells(1, Columns.Count).End(xlToLeft).Address
+findname = Left(fcol, Len(fcol) - 1)
+Range("a1:" & findname & frow).Copy
+Rowf = ThisWorkbook.Sheets("Sheet1").Cells(Rows.Count, 1).End(xlUp).Row
+ThisWorkbook.Sheets("Sheet1").Range("a" & Rowf + 1).PasteSpecial
+ActiveWorkbook.Close
+Next
+MsgBox fd.SelectedItems.Count & " File Completed"
+End Sub
